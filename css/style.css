@@ -1,0 +1,88 @@
+#bubble{
+    float: right;
+    width: 70%;
+}
+.buttonParameters:hover{
+    background-color: #ffdc9d;
+}
+.buttonContainer{   
+    margin-left: auto;
+    margin-right: auto;
+    display: inline
+}
+.buttonParameters{
+    padding: 5px;
+    font-size: 1.25em;
+    text-decoration: none;
+    width: 100%
+}
+.chartBackground{
+   fill: white;
+   stroke: black;
+}
+#citySearch{
+    height: 55px !important;
+}
+#clear{
+    height: 30px;
+    cursor: default !important
+}
+.fa{
+    margin-right: auto;
+    margin-left: auto;
+}
+.infolabel h1 {
+    text-align: center;
+    margin: 0 0px 0 0;
+    padding: 0;
+    display: block;
+    font-size: 1.35em;
+    margin-bottom: -20px;
+    font-family: 'Heebo', sans-serif;
+}
+.infolabel {
+    text-align: left;
+    margin: 0 20px 0 0;
+    position: absolute;
+    min-height: 6vh;
+    max-height: auto;
+    min-width: auto;
+    color: black;
+    background-color: rgb(228, 228, 228);
+    border: solid thin black;
+    padding: 5px 10px;
+    top: -75px;
+    font-family: 'Heebo', sans-serif;
+}
+#timeSeries{
+    margin-top: 50px;
+    float: left;
+    width: 30%;
+    background-color: rgb(228, 228, 228)
+}
+#selectedYear{
+    font-size: 1.25em;
+    margin-bottom: 10px;
+}
+.select2-container--default .select2-selection--single{
+    height: 35px !important;
+    font-size: 1em !important;
+}
+.select2-selection__rendered {
+    line-height: 35px !important;
+    font-size: 1.25em !important;
+}
+.step{
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    background-color: white;
+    width: 30%;
+    padding: 5px;
+    cursor: default !important;
+    font-size: 0.95em
+}
+.step:hover{
+    background-color: #ffdc9d;
+}
+

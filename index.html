@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--This is for Lesson 3-->
+<html lang="en">
+    <head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=10"/>
+        <meta charset="utf-8">
+		<meta name="viewport" content="width=device-width">
+            <title>Housing values</title>
+
+        <link rel="icon" type = image/png href="img\SiteBrand.png">
+        <link rel="stylesheet" href="css\style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+        
+
+    </head>
+
+    <body>
+        <div style="text-align: center;">
+            <h1>Time Series Comparison of Metropolitan Statistical Areas (MSA) with Median Household Income & House Value</h1>
+            <div id = "timeSeries">
+                <div style = "text-align: left;">The chart on the right portrays the income shift of MSA in the United States. Through the past decade, many metropolitan areas began to 
+                    see a noticeable shift in where a lot of people were living due to the median household income and the median home value. </div>
+                <br>
+                <div>
+                    <div id = "selectedYear">Current Year: 2010</div>
+                    <div class = "buttonContainer">
+                        <button id="forward" class = 'step'> << Previous Year</i></button>
+                        <button id="backward" class = 'step'>Next Year >></i></button>
+                    </div>
+                    <div id = "legend"></div>
+                </div>
+                <div id = 'searchDiv'>
+                    <p>Search for a city to examine and compare</p>
+                    <div>
+                        <select id = "citySearch" style ="width: 100%"></select>
+                        <div id = "clear">
+                            <button class = 'buttonParameters'>
+                                Click Here to Clear Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div id = "locatorMap"></div>
+                
+            </div>
+            <div id = "bubble"></div>
+        </div>
+        <script src = "lib\jquery-3.4.1.js"></script>
+        <script type="text/javascript" src="lib/d3.js"></script>
+        <script type= "text/javascript" src="js/main.js"></script>
+        <script src= "https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    </body>
+</html>
