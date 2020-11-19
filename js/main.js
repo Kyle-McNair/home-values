@@ -6,7 +6,7 @@ var margin = {top: 50, right: 100, bottom: 100, left: 100},
 var translate = "translate(" + margin.left + "," + margin.top+")";
 
 
-// append the svg object to the body of the page
+
 svg = d3.select("#bubble")
   .append("svg")
     .attr("width", (width*.7) + margin.left + margin.right)
@@ -14,14 +14,44 @@ svg = d3.select("#bubble")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+var map, mapHeight, mapWidth, albers,path;
 
+mapHeight = $('#bubble').height()*.5
+mapWidth = $('#timeSeries').width()
+
+map = d3.select("#locatorMap")
+  .append("svg")
+  .attr("class","map")
+  .attr("width",mapWidth)
+  .attr("height", mapHeight)
+
+albers = d3.geoAlbersUsa()
+.scale(mapWidth*1.25)
+.translate([mapWidth/2,mapHeight/2])
+
+
+path = d3.geoPath()
+    .projection(albers);
 
 var promises = [];
-promises.push(d3.csv("data/MSA_Pop_Income_Housing2.csv"))
+promises.push(d3.csv("data/MSA_Pop_Income_Housing2.csv"));
+promises.push(d3.json("data/states-10m.json"));
 Promise.all(promises).then(callback);
 
 function callback(data){
   msa = data[0]
+  states = data[1]
+
+  var usa = topojson.feature(states, states.objects.states);
+  console.log(usa)
+
+ map.append("path")
+        .datum(usa)
+        .attr("class", "states")
+        .attr("d", path)
+        .attr("stroke", "#FFFFFF")
+        .attr("stroke-width", "0.15px")
+
 
   var year2010 = msa.filter(d => d.YEAR === "2010")
 
@@ -67,7 +97,7 @@ function callback(data){
   svg.append("text")
     .attr("text-anchor","middle")
     .attr("x",(width*.7) - ((width*.7)/2))
-    .attr("y",height+75)
+    .attr("y",height+45)
     .text("Median Household Income")
 
   y = d3.scaleLinear()
@@ -94,7 +124,7 @@ function callback(data){
 
   svg.append("text")
     .attr("class","bubbleChartYear")
-    .attr("x",(width*.7)-140)
+    .attr("x",(width*.7)-150)
     .attr("y",(height-15))
     .attr("font-size","4em")
     .text("2010")
