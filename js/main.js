@@ -1,8 +1,8 @@
 // set the dimensions and margins of the graph
 var svg, x, y, focus, focusText, total, rect, mouseG, tooltip, tooltiptext, circles, x, y, radius;
-var margin = {top: 50, right: 100, bottom: 100, left: 100},
+var margin = {top: 50, right: 25, bottom: 100, left: 100},
     width = (window.innerWidth*0.95) - margin.left - margin.right,
-    height = (window.innerHeight*0.9) - margin.top - margin.bottom;
+    height = (window.innerHeight) - margin.top - margin.bottom;
 var translate = "translate(" + margin.left + "," + margin.top+")";
 
 
@@ -14,9 +14,15 @@ svg = d3.select("#bubble")
   .append("g")
     .attr("transform",
           "translate(" + margin.left + "," + margin.top + ")");
+
+var chartBackground = svg.append("rect")
+  .attr("class", "chartBackground")
+  .attr("width", (width*.7))
+  .attr("height", height);
+
 var map, mapHeight, mapWidth, albers,path;
 
-mapHeight = $('#bubble').height()*.5
+mapHeight = $('.chartBackground').height()/2
 mapWidth = $('#timeSeries').width()
 
 map = d3.select("#locatorMap")
@@ -26,7 +32,7 @@ map = d3.select("#locatorMap")
   .attr("height", mapHeight)
 
 albers = d3.geoAlbersUsa()
-.scale(mapWidth*1.25)
+.scale(mapWidth*1.2)
 .translate([mapWidth/2,mapHeight/2])
 
 
@@ -35,15 +41,16 @@ path = d3.geoPath()
 
 var promises = [];
 promises.push(d3.csv("data/MSA_Pop_Income_Housing2.csv"));
+promises.push(d3.csv("data/msa_coordinates.csv"));
 promises.push(d3.json("data/states-10m.json"));
 Promise.all(promises).then(callback);
 
 function callback(data){
   msa = data[0]
-  states = data[1]
+  msa_coords = data[1]
+  states = data[2]
 
   var usa = topojson.feature(states, states.objects.states);
-  console.log(usa)
 
  map.append("path")
         .datum(usa)
@@ -51,6 +58,7 @@ function callback(data){
         .attr("d", path)
         .attr("stroke", "#FFFFFF")
         .attr("stroke-width", "0.15px")
+        .attr("fill","#767676")
 
 
   var year2010 = msa.filter(d => d.YEAR === "2010")
@@ -84,20 +92,14 @@ function callback(data){
   .domain([25000,140000])
   .range([0,width*.7])
 
-  var chartBackground = svg.append("rect")
-    .attr("class", "chartBackground")
-    .attr("width", (width*.7))
-    .attr("height", height)
-
-
   svg.append("g")
     .attr("transform","translate(0,"+height+")")
     .call(d3.axisBottom(x).tickFormat(d3.format("$,")).ticks(5))
 
   svg.append("text")
     .attr("text-anchor","middle")
-    .attr("x",(width*.7) - ((width*.7)/2))
-    .attr("y",height+45)
+    .attr("x",(width*.7) - ((width*.7)/1.27))
+    .attr("y",height-5)
     .text("Median Household Income")
 
   y = d3.scaleLinear()
@@ -110,15 +112,15 @@ function callback(data){
   svg.append("text")
     .attr("text-anchor","end")
     .attr("transform", "translate(0,5)rotate(-90)")
-    .attr("x",(width*.15)*(-1))
-    .attr("y",-75)
+    .attr("x",(width*.275)*(-1))
+    .attr("y",20)
     .text("Median House Value")
 
   svg.append("text")
     .attr("text-anchor","middle")
     .attr("class","bubbleChartTitle")
     .attr("x",(width*.7) - ((width*.7)/2))
-    .attr("y",-20)
+    .attr("y",25)
     .attr("font-size","1.35em")
     .text("Correlation between Median Household Income and Median Home Value")
 
@@ -145,7 +147,7 @@ function callback(data){
         return b.Population - a.Population
         })
       .on("mouseover", function(d){
-        highlight(d,d.Population,d.Income,d.Home_Value);})
+        highlight(d,d.Population,d.Income,d.Home_Value,msa_coords);})
       .on("mouseout", function(d){
           dehighlight(d)
       })
@@ -164,14 +166,10 @@ function callback(data){
       .attr("r",function(d){
         return radius(d.Population)
       })
-        
-
 
   svg.selectAll('circle')
   .append("desc")
   .text('{"fill": "orange","stroke-width": "0.75"}');
-
-  
 
   var index = 0
   $('.step').click(function(){
@@ -190,32 +188,53 @@ function callback(data){
     placeholder: 'Use this Dropdown to Search for an MSA....',
     data: name,
   })
+  var selected_msa;
   $('#citySearch').on('select2:select', function (e) {
-      var selected_msa = e.params.data.id;
-      highlightSelectedBubble(selected_msa)
+      selected_msa = e.params.data.id;
+      highlightSelectedBubble(selected_msa, msa_coords)
   });
   $('#clear').on("click",function(e){
-    $('.select2').remove()
+    // $('.select2').remove()
     $('#citySearch').select2({
       allowClear: true,
       placeholder: 'Use this Dropdown to Search for an MSA....',
       data: dropdownList.Name,
     })
     $('#citySearch').on('select2:select', function (e) {
-        var selected_msa = e.params.data.id;
-        highlightSelectedBubble(selected_msa)
+        selected_msa = e.params.data.id;
+        highlightSelectedBubble(selected_msa, msa_coords)
     });
-    unhighlightBubble()
+    unhighlightBubble(selected_msa, msa_coords)
   })
   createLegend()
 }
-function highlight(props, population,income, housing){
+function highlight(props, population,income, housing,msa_xy){
+  map.selectAll('.map')
+  .data(msa_xy.filter(d => d.CBSAA === props.CBSAA))
+  .enter()
+  .append("circle")
+    .attr("class", function(d){
+      return "map" +d.CBSAA; })
+    .attr("fill","orange")
+    .style("fill-opacity", 1)
+    .style("stroke","black")
+    .attr("stroke","black")
+    .style("stroke-width",0.75)
+    .attr("cx",function(d){
+      return albers([d.X,d.Y])[0]
+    })
+    .attr("cy",function(d){
+      return albers([d.X,d.Y])[1]
+    })
+    .attr("r","5")
+
   var selected = d3.selectAll("." + "CBSAA"+props.CBSAA )
       .style("fill", "grey")
       .style("stroke-width", 2);
   setLabel(props, population, income, housing)
+  
 };
-function dehighlight(props){
+function dehighlight(props, msa_xy){
   var selected = d3.selectAll("." + "CBSAA"+props.CBSAA)
       .style("fill", function(){
           return getStyle(this, "fill") 
@@ -223,7 +242,7 @@ function dehighlight(props){
       .style("stroke-width", function(){
           return getStyle(this, "stroke-width")
       });
-
+  var mapSelect = d3.selectAll(".map"+props.CBSAA).remove()
   function getStyle(element, styleName){
       var styleText = d3.select(element)
           .select("desc") //the desc finds the same as the element to go back to original style.
@@ -292,7 +311,6 @@ function updateBubbles(year, msa){
     return radius(d.Population)
   })
     
-    
   var chartTitle = d3.select(".bubbleChartYear")
   // chart title is updated based on selected attribute. 
   .text(year)
@@ -302,42 +320,75 @@ function updateBubbles(year, msa){
     
 
 }
-function highlightSelectedBubble(selected_msa){
+function highlightSelectedBubble(chosen_msa, msa_xy){
+  var selected_msa
+  for(var m in msa_xy){
+    if(chosen_msa == msa_xy[m].NAME){
+      selected_msa = msa_xy[m]
+    }
+  }
+  map.selectAll('circle')
+  .data(msa_xy.filter(d => d.CBSAA === selected_msa.CBSAA))
+  .enter()
+  .append("circle")
+    .attr("class", function(d){
+      return "selected" +d.CBSAA; })
+    .attr("fill","#800080")
+    .style("fill-opacity", 1)
+    .style("stroke","black")
+    .attr("stroke","black")
+    .style("stroke-width",0.75)
+    .attr("cx",function(d){
+      return albers([d.X,d.Y])[0]
+    })
+    .attr("cy",function(d){
+      return albers([d.X,d.Y])[1]
+    })
+    .attr("r","5")
+
   circles
   .attr("opacity",function(d){
-    if(d.NAME == selected_msa){
+    if(d.NAME == selected_msa.NAME){
     return 1
   }
-  if(d.NAME != selected_msa){
+  if(d.NAME != selected_msa.NAME){
     return 0.2
   }
   })
   .attr("fill",function(d){
-    if(d.NAME == selected_msa){
-      return "#7f3b08"
+    if(d.NAME == selected_msa.NAME){
+      return "#800080"
     }
-    if(d.NAME != selected_msa){
+    if(d.NAME != selected_msa.NAME){
       return "Orange"
     }
   })
   svg.selectAll('desc')
     .text(function(d){
-      if(d.NAME == selected_msa){
-        return '{"fill": "#7f3b08","stroke-width": "0.75"}'
+      if(d.NAME == selected_msa.NAME){
+        return '{"fill": "#800080","stroke-width": "0.75"}'
       }
-      if(d.NAME != selected_msa){
+      if(d.NAME != selected_msa.NAME){
         return '{"fill": "orange","stroke-width": "0.75"}'
       }
       
     });
 }
-function unhighlightBubble(){
+function unhighlightBubble(chosen_msa, msa_xy){
+  var selected_msa
+  for(var m in msa_xy){
+    if(chosen_msa == msa_xy[m].NAME){
+      selected_msa = msa_xy[m]
+    }
+  }
   circles
   .attr("opacity",1)
-  .attr("fill","Orange")
+  .attr("fill",function(d){return "Orange"})
 
   svg.selectAll('desc')
     .text('{"fill": "Orange","stroke-width": "0.75"}');
+
+  d3.selectAll(".selected" + selected_msa.CBSAA).remove()
 }
 function createLegend(){
   var LegendValues = [500000,2500000,10000000]

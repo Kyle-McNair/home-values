@@ -21,27 +21,29 @@
 
     <body>
         <div style="text-align: center;">
-            <h1>Time Series Comparison of Metropolitan Statistical Areas (MSA) with Median Household Income & House Value</h1>
+            <h1 style = "margin-bottom: -30px">Time Series Comparison of Metropolitan Statistical Areas (MSA)</h1>
             <div id = "timeSeries">
-                <div style = "text-align: left;">The chart on the right portrays the income shift of MSA in the United States. Through the past decade, many metropolitan areas began to 
-                    see a noticeable shift in where a lot of people were living due to the median household income and the median home value. </div>
-                <br>
-                <div>
-                    <div id = "selectedYear">Current Year: 2010</div>
-                    <div class = "buttonContainer">
-                        <button id="forward" class = 'step'> << Previous Year</i></button>
-                        <button id="backward" class = 'step'>Next Year >></i></button>
-                    </div>
-                    <div id = "legend"></div>
-                </div>
-                <div id = 'searchDiv'>
-                    <!-- <p>Search for a city to examine and compare</p> -->
+                <div id = "topHalf">
+                    <div style = "text-align: left;">The chart on the right portrays the income shift of MSA in the United States. Through the past decade, many metropolitan areas began to 
+                        see a noticeable shift in where a lot of people were living due to the median household income and the median home value. </div>
+                    <br>
                     <div>
-                        <select id = "citySearch" style ="width: 100%"></select>
-                        <div id = "clear">
-                            <button class = 'buttonParameters'>
-                                Click Here to Clear Search
-                            </button>
+                        <div id = "selectedYear">Current Year: 2010</div>
+                        <div class = "buttonContainer">
+                            <button id="forward" class = 'step'> << Previous Year</i></button>
+                            <button id="backward" class = 'step'>Next Year >></i></button>
+                        </div>
+                        <div id = "legend"></div>
+                    </div>
+                    <div id = 'searchDiv'>
+                        <!-- <p>Search for a city to examine and compare</p> -->
+                        <div>
+                            <select id = "citySearch" style ="width: 100%"></select>
+                            <div id = "clear">
+                                <button class = 'buttonParameters'>
+                                    Click Here to Clear Search
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
