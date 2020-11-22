@@ -1,6 +1,6 @@
 // set the dimensions and margins of the graph
 var svg, x, y, focus, focusText, total, rect, mouseG, tooltip, tooltiptext, circles, x, y, radius;
-var margin = {top: 50, right: 25, bottom: 30, left: 60},
+var margin = {top: 50, right: 25, bottom: 45, left: 60},
     width = (window.innerWidth) - margin.left - margin.right,
     height = (window.innerHeight*.95) - margin.top - margin.bottom;
 var translate = "translate(" + margin.left + "," + margin.top+")";
@@ -308,7 +308,7 @@ function setLabel(props, population, income, housing){
   var metroArea = "<h1>"+props.NAME+
   "</h1><br> <b>Population:</b> "+d3.format(",")(population)
   +"<br> <b>Median Household Income:</b> "+ d3.format("$,")(income)
-  +"<br> <b>Median Home Value:</b>"+d3.format("$,")(housing)
+  +"<br> <b>Median Home Value:</b> "+d3.format("$,")(housing)
 
   labelAttributes = metroArea
 
