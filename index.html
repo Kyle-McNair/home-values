@@ -20,38 +20,48 @@
     </head>
 
     <body>
-        <div style="text-align: center;">
-            <h1 style = "margin-bottom: -30px">Time Series Comparison of Metropolitan Statistical Areas (MSA)</h1>
-            <div id = "timeSeries">
-                <div id = "topHalf">
-                    <div style = "text-align: left;">The chart on the right portrays the income shift of MSA in the United States. Through the past decade, many metropolitan areas began to 
-                        see a noticeable shift in where a lot of people were living due to the median household income and the median home value. </div>
-                    <br>
-                    <div>
-                        <div id = "selectedYear">Current Year: 2010</div>
-                        <div class = "buttonContainer">
-                            <button id="forward" class = 'step'> << Previous Year</i></button>
-                            <button id="backward" class = 'step'>Next Year >></i></button>
-                        </div>
-                        <div id = "legend"></div>
-                    </div>
-                    <div id = 'searchDiv'>
-                        <!-- <p>Search for a city to examine and compare</p> -->
+        <div style = 'display: inline;'>
+            <div style="text-align: center;">
+                <h1 style = "margin-bottom: -30px">Time Series Comparison of Metropolitan Statistical Areas (MSA)</h1>
+                <div id = "timeSeries">
+                    <div id = "topHalf">
+                        <div style = "text-align: left; padding: 7px">The chart on the right portrays the how MSA's have shifted based on median household income and median household value.
+                            Use the panel below to compare through the years and also filter out specific MSA's. </div>
+                        <br>
                         <div>
-                            <select id = "citySearch" style ="width: 100%"></select>
-                            <div id = "clear">
-                                <button class = 'buttonParameters'>
-                                    Click Here to Clear Search
-                                </button>
+                            <div id = "selectedYear">Current Year: 2010</div>
+                            <div class = "buttonContainer">
+                                <button id="forward" class = 'step'> << Previous Year</i></button>
+                                <button id="backward" class = 'step'>Next Year >></i></button>
+                            </div>
+                            <div id = "legend"></div>
+                        </div>
+                        <div id = 'searchDiv'>
+                            <div>
+                                <select id = "citySearch" style ="width: 100%">
+                                    <option></option>
+                                </select>
+                                <div id = "clear">
+                                    <button class = 'buttonParameters'>
+                                        Click Here to Clear Search
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
+                    <div id = "locatorMap"></div>
                 </div>
-                <div id = "locatorMap"></div>
-                
+                <div id = "bubble"></div>
             </div>
-            <div id = "bubble"></div>
+        </div>  
+        <div class = 'source'>
+            <div style = 'height:20px'></div>
+            <p style = 'margin: 2px;'>Source: <a href = 'https://www.nhgis.org/',target = '_blank'>National Historial GIS (NHGIS)</a> MSA American Community Survey 1-year data 2010-2019</p>
+            <p style = 'margin: 2px'>Created by <a href = 'https://kyle-mcnair.github.io/',target = '_blank'>Kyle McNair</a></p>
+            <p style = 'margin: 2px'>See full code <a href = 'https://github.com/Kyle-McNair/home-values'>here</a></p>
+            <p style = 'margin: 2px'>Last Updated November 21, 2020</p>
         </div>
+
         <script type="text/javascript" src="lib/d3.js"></script>
         <script type="text/javascript" src="lib/topojson.js"></script>
         <script src = "lib\jquery-3.4.1.js"></script>

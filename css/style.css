@@ -1,10 +1,13 @@
+a:link, a:visited {
+    color: blue;
+}
 body{
     font-family: 'Roboto', sans-serif;
-    overflow-y: hidden;
+
 }
 #bubble{
     float: right;
-    width: 70%;
+    width: 74%;
 }
 .buttonParameters:hover{
     background-color: #ffdc9d;
@@ -35,6 +38,10 @@ body{
     margin-right: auto;
     margin-left: auto;
 }
+.informText{
+    z-index: 100 !important;
+    font-size: 1.5em;
+}
 .infolabel h1 {
     text-align: center;
     margin: 0 0px 0 0;
@@ -61,27 +68,30 @@ body{
 #timeSeries{
     margin-top: 50px;
     float: left;
-    width: 30%;
-    background-color: rgb(228, 228, 228)
+    width: 24%;
+    background-color: rgb(228, 228, 228);
+    border: solid black 1px;
 }
 #selectedYear{
+    margin-top: -3%;
     font-size: 1.25em;
-    margin-bottom: 10px;
 }
 .select2-container--default .select2-selection--single{
     height: 35px !important;
-    font-size: 1em !important;
-}
-.select2-selection__rendered {
-    line-height: 35px !important;
     font-size: 1.25em !important;
+}
+.source{
+    text-align: left;
+    font-size: 0.7em;
+    float: left;
+   
 }
 .step{
     margin-left: auto;
     margin-right: auto;
     text-align: center;
     background-color: white;
-    width: 35%;
+    width: 45%;
     padding: 5px;
     cursor: default !important;
     font-size: 0.95em
