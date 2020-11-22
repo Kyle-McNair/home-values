@@ -84,7 +84,9 @@ body{
     text-align: left;
     font-size: 0.7em;
     float: left;
-   
+    position: absolute;
+    left: 5;
+    bottom: -10%;
 }
 .step{
     margin-left: auto;
